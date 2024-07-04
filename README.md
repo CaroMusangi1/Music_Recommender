@@ -1,4 +1,4 @@
-OJECT NAME – Music Recommender Based on Liked Songs.
+PROJECT NAME – Music Recommender Based on Liked Songs.
 TAGLINE –  Discover new music based on your favorite tracks.
 
 2.TEAM MEMBERS
