@@ -1,0 +1,16 @@
+music_recommender/
+├── backend/
+│   ├── app.py
+│   ├── models.py
+│   ├── recommendation_engine.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── ...
+├── frontend/
+│   ├── public/
+│   ├── src/
+│   ├── package.json
+│   ├── Dockerfile
+│   └── ...
+├── README.md
+└── .gitignore
