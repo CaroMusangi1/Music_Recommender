@@ -13,6 +13,11 @@ recommendations = [
 # Liked songs list (in-memory)
 liked_songs = []
 
+# Root endpoint
+@app.route('/')
+def home():
+    return "Welcome to the Music Recommender!"
+
 # Endpoint to get recommendations
 @app.route('/recommendations', methods=['GET'])
 def get_recommendations():
@@ -30,8 +35,10 @@ def like_song():
         return jsonify({"error": "Invalid request"}), 400
     user_id = data.get('user_id')
     song = data.get('song')
-    if not user_id or not song:
-        return jsonify({"error": "User ID and song are required"}), 400
+    if not user_id:
+        return jsonify({"error": "User ID is required"}), 400
+    if not song:
+        return jsonify({"error": "Song is required"}), 400
     liked_songs.append(song)
     return jsonify({"status": "success"}), 201
 
@@ -41,4 +48,4 @@ def get_liked_songs():
     return jsonify(liked_songs)
 
 if __name__ == '__main__':
-    app.run(port=3001)
+    app.run(debug=True, port=3001)
