@@ -26,14 +26,14 @@ def get_recommendations():
 @app.route('/api/likes', methods=['POST'])
 def like_song():
     data = request.get_json()
+    if not data:
+        return jsonify({"error": "Invalid request"}), 400
     user_id = data.get('user_id')
     song = data.get('song')
-
-    if user_id and song:
-        liked_songs.append(song)
-        return jsonify({"status": "success"}), 201
-    else:
+    if not user_id or not song:
         return jsonify({"error": "User ID and song are required"}), 400
+    liked_songs.append(song)
+    return jsonify({"status": "success"}), 201
 
 # Endpoint to get liked songs
 @app.route('/api/liked_songs', methods=['GET'])
@@ -41,4 +41,4 @@ def get_liked_songs():
     return jsonify(liked_songs)
 
 if __name__ == '__main__':
-    app.run(port=3001)
+    app.run(port=3001)git
