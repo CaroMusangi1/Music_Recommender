@@ -13,6 +13,12 @@ recommendations = [
 # Liked songs list (in-memory)
 liked_songs = []
 
+# Root endpoint
+@app.route('/')
+def home():
+    return "Welcome to the Music Recommender!"
+
+    
 # Endpoint to get recommendations
 @app.route('/recommendations', methods=['GET'])
 def get_recommendations():
@@ -41,4 +47,4 @@ def get_liked_songs():
     return jsonify(liked_songs)
 
 if __name__ == '__main__':
-    app.run(port=3001)
+    app.run(debug=True, port=3001)
