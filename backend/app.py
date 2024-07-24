@@ -1,27 +1,44 @@
-#!/usr/bin/python3
 from flask import Flask, request, jsonify
-from models import db, User, Song
-from recommendation_engine import get_recommendations
+from flask_cors import CORS
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///music_recommender.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db.init_app(app)
+CORS(app)
 
-@app.route('/api/recommendations', methods=['GET'])
-def recommendations():
+# Sample data for recommendations
+recommendations = [
+    {"id": 1, "title": "Song 1", "artist": "Artist 1"},
+    {"id": 2, "title": "Song 2", "artist": "Artist 2"}
+]
+
+# Liked songs list (in-memory)
+liked_songs = []
+
+# Endpoint to get recommendations
+@app.route('/recommendations', methods=['GET'])
+def get_recommendations():
     user_id = request.args.get('user_id')
-    recommendations = get_recommendations(user_id)
-    return jsonify(recommendations)
+    if user_id:
+        return jsonify(recommendations)
+    else:
+        return jsonify({"error": "User ID is required"}), 400
 
+# Endpoint to like a song
 @app.route('/api/likes', methods=['POST'])
 def like_song():
-    data = request.json
-    user_id = data['user_id']
-    song_data = data['song']
-    # Logic to add liked song to the database
-    # ...
-    return jsonify({'status': 'success'})
+    data = request.get_json()
+    user_id = data.get('user_id')
+    song = data.get('song')
+
+    if user_id and song:
+        liked_songs.append(song)
+        return jsonify({"status": "success"}), 201
+    else:
+        return jsonify({"error": "User ID and song are required"}), 400
+
+# Endpoint to get liked songs
+@app.route('/api/liked_songs', methods=['GET'])
+def get_liked_songs():
+    return jsonify(liked_songs)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=3001)
